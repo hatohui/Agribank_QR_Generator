@@ -1,30 +1,11 @@
-# React + TypeScript + Vite
+# An Agribank QRCode Template generator PC App for customers
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project's goal is to fasten the procedure and mass produce the Vietnamese QR Banking's prints for services.
 
-Currently, two official plugins are available:
+## Feats:
+1.  Reads Excel Files -> Parse data to the screen to show the username and the account's number
+2.  Allow user to choose directory to save the images to
+3.  Converting HTML into images during the process
+4.  Ultilizing VietQR's API for fast QR link (https://vietqr.io/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+*Built with Electron Vite and TypeScript, intended for Windows*
