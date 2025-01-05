@@ -9,3 +9,5 @@ This project's goal is to fasten the procedure and mass produce the Vietnamese Q
 4.  Ultilizing VietQR's API for fast QR link (https://vietqr.io/)
 
 *Built with Electron Vite and TypeScript, intended for Windows*
+
+WIP. only support one template for now.
