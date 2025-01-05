@@ -1,8 +1,9 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import path from "node:path";
-
+import path, { resolve } from "node:path";
+import fs from "fs";
+import { exec } from "node:child_process";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -42,12 +43,52 @@ function createWindow() {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
   });
 
-  // win.removeMenu();
+  win.maximize();
+
+  //handlers
+  ipcMain.handle("select-directory", async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ["openDirectory"],
+    });
+    return result.canceled ? null : result.filePaths[0];
+  });
+  // ;
+  ipcMain.handle(
+    "save-image",
+    async (_, filePath: string, image: string, fileName: string) => {
+      try {
+        const IMAGE_UPLOAD_PATH = path.resolve(filePath);
+        if (!fs.existsSync(IMAGE_UPLOAD_PATH)) throw Error("File not found");
+
+        const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+        const filePathWithName = path.join(IMAGE_UPLOAD_PATH, fileName);
+
+        fs.writeFileSync(filePathWithName, buffer);
+        return filePathWithName;
+      } catch (error) {
+        console.error("Something happened here");
+      }
+    }
+  );
+
+  ipcMain.handle("open-file-explorer", (_event, filePath: string) => {
+    return new Promise<void>((resolve, reject) => {
+      exec(`explorer.exe "${filePath}"`, (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  });
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
   } else {
     // win.loadFile('dist/index.html')
+    win.removeMenu();
     win.loadFile(path.join(RENDERER_DIST, "index.html"));
   }
 }

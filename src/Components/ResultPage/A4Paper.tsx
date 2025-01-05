@@ -1,23 +1,23 @@
 import React from "react";
-import Card from "../QR/Card";
-import { QRUserData } from "../../types";
+import CardV1 from "../Cards/CardV1";
+import { GlobalConfig, UserData } from "../../types";
 import { MARGIN } from "../../constant/paperSize";
 
 interface PaperProps {
-  datas: QRUserData[];
+  datas: UserData[];
   indexes: number[];
+  config: GlobalConfig;
 }
 
-const A4Paper: React.FC<PaperProps> = ({ datas, indexes }) => {
+const A4Paper: React.FC<PaperProps> = ({ datas, indexes, config }) => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-200">
       <div
-        id="paper"
-        className="relative w-[210mm] h-[297mm] m-4 bg-white shadow-lg border flex flex-wrap justify-center items-center"
+        className="A4papers relative w-[210mm] h-[297mm] m-4 bg-white shadow-lg border flex flex-wrap justify-center items-center"
         style={{ gap: `${MARGIN}cm` }}
       >
         {indexes.map((index) => (
-          <Card key={index} data={datas[index]} />
+          <CardV1 key={index} data={datas[index]} config={config} />
         ))}
       </div>
     </div>

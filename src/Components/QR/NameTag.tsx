@@ -1,7 +1,11 @@
 import React from "react";
-import { QRProps } from "./Card";
+import { QRProps } from "../Cards/CardV1";
 
-const NameTag: React.FC<QRProps> = ({ data }) => {
+interface NameTagProps extends QRProps {
+  branch: string;
+}
+
+const NameTag: React.FC<NameTagProps> = ({ data, branch }) => {
   const nameToShow = data.name.toUpperCase().trim();
   const accountToShow = `${data.accountNumber.substring(
     0,
@@ -50,7 +54,7 @@ const NameTag: React.FC<QRProps> = ({ data }) => {
             marginTop: 7,
           }}
         >
-          {data.location.branch}
+          {branch}
         </div>
       </div>
     </div>

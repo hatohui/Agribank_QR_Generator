@@ -1,11 +1,12 @@
 import { A4_HEIGHT, A4_WIDTH } from "../constant/paperSize";
+import { getSizeFromType, SampleTypes } from "../constant/sampleData";
 import { Sizes } from "../types";
 
-export const getImagesPerPaper = (ratio: Sizes): number => {
+export const getImagesPerPaper = (type: SampleTypes): number => {
   let rectWidth;
   let rectHeight;
 
-  switch (ratio) {
+  switch (getSizeFromType(type)) {
     case Sizes._8x11:
       rectWidth = 8;
       rectHeight = 11;
