@@ -1,9 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { UserData, GlobalConfig } from "../../types";
-import { Sample, SampleTypes, sampleList } from "../../constant/sampleData";
-import CardV1 from "../Cards/CardV1";
 import { Link } from "react-router-dom";
-import CardV2 from "../Cards/CardV2";
+import { getCard, sampleList, SampleTypes } from "../../CardModels";
 
 type SampleSelectionProps = {
   setConfig: React.Dispatch<React.SetStateAction<GlobalConfig>>;
@@ -21,32 +19,11 @@ const SampleSelection: React.FC<SampleSelectionProps> = ({
   const tempConfig: GlobalConfig = {
     locationId: 0,
     savePath: "",
-    sampleType: SampleTypes.NONE,
+    sampleType: SampleTypes.DEFAULT,
   };
 
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setConfig({ ...config, sampleType: Number(event.currentTarget.value) });
-  };
-
-  const getCardForSample = (sample: Sample) => {
-    switch (sample.type) {
-      case SampleTypes.DEFAULT:
-        return (
-          <CardV1
-            data={tempData}
-            config={{ ...tempConfig, sampleType: sample.type }}
-          />
-        );
-      case SampleTypes.NEW_YEAR:
-        return (
-          <CardV2
-            data={tempData}
-            config={{ ...tempConfig, sampleType: sample.type }}
-          />
-        );
-      default:
-        return "CARD NOT AVAILABLE YET!";
-    }
   };
 
   return (
@@ -76,21 +53,23 @@ const SampleSelection: React.FC<SampleSelectionProps> = ({
       </div>
 
       <div className="grid m-5 lg:grid-cols-3 gap-2 grid-cols-2 grid-rows-2">
-        {sampleList.map((sample) => (
-          <button
-            value={sample.type}
-            className={`${
-              config.sampleType === sample.type ? "border-emerald-950 " : ""
-            } border-2 select-none hover:border-2 hover:border-blue-500 rounded`}
-            onClick={handleOnClick}
-          >
-            <div className="select-none text-lg font-semibold text-center my-2">
-              {sample.name}
-            </div>
-            <div className="flex justify-center m-5">
-              {getCardForSample(sample)}
-            </div>
-          </button>
+        {sampleList.map((sample, i) => (
+          <Fragment key={i}>
+            <button
+              value={sample.type}
+              className={`${
+                config.sampleType === sample.type ? "border-emerald-950 " : ""
+              } border-2 select-none hover:border-2 hover:border-blue-500 rounded`}
+              onClick={handleOnClick}
+            >
+              <div className="select-none text-lg font-semibold text-center my-2">
+                {sample.name}
+              </div>
+              <div className="flex justify-center m-5">
+                {getCard({ ...tempConfig, sampleType: sample.type }, tempData)}
+              </div>
+            </button>
+          </Fragment>
         ))}
         <button className="border-2 select-none rounded cursor-default">
           <div className="select-none text-lg font-semibold text-center my-2">

@@ -10,6 +10,7 @@ export const parseExcelToUserData = async (file: File): Promise<UserData[]> => {
     defval: "",
   });
   const userData: UserData[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   jsonData.slice(1).forEach((data: any) => {
     userData.push({
       name: String(data[1]).toUpperCase().trim(),

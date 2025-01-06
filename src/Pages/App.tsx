@@ -5,7 +5,7 @@ import { useState } from "react";
 import QRGallery from "../Components/ResultPage/QRGallery";
 import { GlobalConfig, UserData } from "../types";
 import SampleSelection from "../Components/SampleSelection/SampleSelection";
-import { SampleTypes } from "../constant/sampleData";
+import { SampleTypes } from "../CardModels";
 
 const App: React.FC = () => {
   const [config, setConfig] = useState<GlobalConfig>({

@@ -7,7 +7,7 @@ import {
 import A4Paper from "./A4Paper";
 import * as htmlToImage from "html-to-image";
 import { v4 as uuid } from "uuid";
-import { SampleTypes } from "../../constant/sampleData";
+import { SampleTypes } from "../../CardModels";
 
 interface QRGalleryProps {
   datas: UserData[];
@@ -48,7 +48,7 @@ const QRGallery: React.FC<QRGalleryProps> = ({
       (config.locationId !== 0 && !config.locationId
         ? " dữ liệu địa điểm, "
         : "") +
-      (config.sampleType === SampleTypes.NONE ? "dữ liệu mẫu," : "") +
+      (config.sampleType === SampleTypes.NONE ? " dữ liệu mẫu," : "") +
       (!config.savePath ? " địa điểm lưu trữ hình ảnh," : "") +
       (!datas.length ? " dữ liệu từ file excel" : "")
     );
@@ -75,6 +75,8 @@ const QRGallery: React.FC<QRGalleryProps> = ({
       })
       .catch((E) => console.log(E));
   };
+
+  console.log(config);
 
   return (
     <div className="flex flex-col items-center justify-center">

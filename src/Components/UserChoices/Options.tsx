@@ -4,6 +4,7 @@ import { locations } from "../../constant/locationData";
 import { Link } from "react-router-dom";
 import DataBoard from "./DataBoard";
 import { parseExcelToUserData } from "../../Helper/parseExcelToJson";
+import HowToUse from "../HowToUse";
 
 interface OptionsProps {
   config: GlobalConfig;
@@ -109,6 +110,7 @@ const Options: React.FC<OptionsProps> = ({
   };
   return (
     <>
+      <HowToUse />
       <form
         className="w-2/4 mx-auto border border-blue-900 rounded-md overflow-hidden m-5"
         onSubmit={handleSubmit}

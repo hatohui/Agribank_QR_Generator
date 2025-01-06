@@ -1,5 +1,5 @@
+import { getSizeFromType, SampleTypes } from "../CardModels";
 import { A4_HEIGHT, A4_WIDTH } from "../constant/paperSize";
-import { getSizeFromType, SampleTypes } from "../constant/sampleData";
 import { Sizes } from "../types";
 
 export const getImagesPerPaper = (type: SampleTypes): number => {
