@@ -1,4 +1,4 @@
-import { SampleTypes } from "./constant/sampleData";
+import { SampleTypes } from "./CardModels";
 
 export type Image = {
   src: string;
@@ -24,3 +24,8 @@ export interface UserData {
   name: string;
   accountNumber: string;
 }
+
+export type Sample = {
+  name: string;
+  type: SampleTypes;
+};

@@ -6,6 +6,7 @@ import QRGallery from "../Components/ResultPage/QRGallery";
 import { GlobalConfig, UserData } from "../types";
 import SampleSelection from "../Components/SampleSelection/SampleSelection";
 import { SampleTypes } from "../CardModels";
+import Warning from "../Components/Warning";
 
 const App: React.FC = () => {
   const [config, setConfig] = useState<GlobalConfig>({
@@ -32,6 +33,7 @@ const App: React.FC = () => {
 
   return (
     <>
+      <Warning />
       <NavBar />
       <Routes>
         <Route

@@ -1,7 +1,6 @@
-import { GlobalConfig, Sizes, UserData } from "./types";
+import { GlobalConfig, Sample, Sizes, UserData } from "./types";
 import CardV1 from "./Components/Cards/CardV1";
 import CardV2 from "./Components/Cards/CardV2";
-import { Sample } from "./constant/sampleData";
 
 //add more types
 export enum SampleTypes {

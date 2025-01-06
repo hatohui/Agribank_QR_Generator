@@ -23,7 +23,10 @@ const SampleSelection: React.FC<SampleSelectionProps> = ({
   };
 
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setConfig({ ...config, sampleType: Number(event.currentTarget.value) });
+    if (config.sampleType === Number(event.currentTarget.value))
+      setConfig({ ...config, sampleType: SampleTypes.NONE });
+    else
+      setConfig({ ...config, sampleType: Number(event.currentTarget.value) });
   };
 
   return (
@@ -38,7 +41,7 @@ const SampleSelection: React.FC<SampleSelectionProps> = ({
         <div className="text-center font-medium text-gray-900">
           Hãy chọn một trong các mẫu sau
         </div>
-        <Link to="/gallery">
+        <Link to="/gallery" className="relative">
           <button
             className={`${
               config.sampleType !== SampleTypes.NONE
@@ -58,10 +61,13 @@ const SampleSelection: React.FC<SampleSelectionProps> = ({
             <button
               value={sample.type}
               className={`${
-                config.sampleType === sample.type ? "border-emerald-950 " : ""
-              } border-2 select-none hover:border-2 hover:border-blue-500 rounded`}
+                config.sampleType === sample.type ? "border-emerald-950" : ""
+              } border-2 select-none hover:border-2 hover:border-blue-500 rounded relative`}
               onClick={handleOnClick}
             >
+              {config.sampleType === sample.type && (
+                <div className="absolute inset-0 bg-gray-600 opacity-25 z-50"></div>
+              )}
               <div className="select-none text-lg font-semibold text-center my-2">
                 {sample.name}
               </div>

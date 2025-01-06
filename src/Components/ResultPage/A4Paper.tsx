@@ -10,8 +10,6 @@ interface PaperProps {
 }
 
 const A4Paper: React.FC<PaperProps> = ({ datas, indexes, config }) => {
-  console.log(config);
-
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-200">
       <div
