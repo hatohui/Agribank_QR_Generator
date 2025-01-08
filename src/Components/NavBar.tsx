@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 type ButtonText = {
@@ -7,6 +7,7 @@ type ButtonText = {
 };
 
 const NavBar: React.FC = () => {
+  const [logoPath, setLogoPath] = useState<string>("");
   const pathName = useLocation().pathname;
   const buttons: ButtonText[] = [
     {
@@ -23,14 +24,21 @@ const NavBar: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchLogoPath = async () => {
+      const path = await window.ipcRenderer.invoke(
+        "get-image-file-path",
+        "AgribankLogo.png"
+      );
+      setLogoPath(path as string);
+    };
+    fetchLogoPath();
+  }, []);
+
   return (
     <div className="bg-gray-800 p-2 text-white text-center flex items-center justify-between">
       <div className="flex items-center ml-3 select-none">
-        <img
-          src="/photos/AgribankLogo.png"
-          alt="Logo"
-          className="h-8 w-8 mr-2"
-        />
+        {logoPath && <img src={logoPath} alt="Logo" className="h-8 w-8 mr-2" />}
         <span className="font-bold">Agribank QR Generator</span>
         <div className="ml-3 font-thin">v1.0</div>
       </div>

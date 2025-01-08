@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Credits: React.FC<{ address: string }> = ({ address }) => {
+  const [imagePath, setImagePath] = useState<string>("");
+
+  useEffect(() => {
+    const fetchImagePath = async () => {
+      const path = await window.ipcRenderer.invoke(
+        "get-image-file-path",
+        "credits.png"
+      );
+      setImagePath(path as string);
+    };
+    fetchImagePath();
+  }, []);
+
   return (
     <>
       <div
@@ -9,7 +22,7 @@ const Credits: React.FC<{ address: string }> = ({ address }) => {
       >
         <div className="w-11/12 h-12 mt-2 bg-white border rounded absolute">
           <div className="flex justify-center items-center h-full">
-            <img className="h-11 w-10/12" src="/photos/credits.png"></img>
+            {imagePath && <img className="h-11 w-10/12" src={imagePath}></img>}
           </div>
         </div>
         <div

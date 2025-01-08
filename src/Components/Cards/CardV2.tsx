@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GlobalConfig, UserData } from "../../types";
 import { _8x12 } from "../../constant/imageRatios";
 import { v4 as uuid } from "uuid";
@@ -11,6 +11,18 @@ export interface QRProps {
 }
 
 const CardV1: React.FC<QRProps> = ({ data, config }) => {
+  const [imagePath, setImagePath] = useState<string>("");
+
+  useEffect(() => {
+    const fetchImagePath = async () => {
+      const path = await window.ipcRenderer.invoke(
+        "get-image-file-path",
+        "mau2.png.jpg"
+      );
+      setImagePath(path as string);
+    };
+    fetchImagePath();
+  }, []);
   const srcImage = getQRLink(data.accountNumber);
   const id = uuid();
   const location = locations.find((l) => l.id === config.locationId);
@@ -26,7 +38,7 @@ const CardV1: React.FC<QRProps> = ({ data, config }) => {
             src={srcImage}
             alt="QRCode"
           />
-          <img src="/public/photos/mau2.png.jpg" />
+          {imagePath && <img src={imagePath} alt="Card Image" />}
         </div>
       </div>
     </div>

@@ -76,8 +76,6 @@ const QRGallery: React.FC<QRGalleryProps> = ({
       .catch((E) => console.log(E));
   };
 
-  console.log(config);
-
   return (
     <div className="flex flex-col items-center justify-center">
       <div>

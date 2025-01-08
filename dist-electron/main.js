@@ -1,82 +1,61 @@
-import { app, BrowserWindow, ipcMain, dialog } from "electron";
-import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
-import path from "node:path";
-import fs from "fs";
-import { exec } from "node:child_process";
-createRequire(import.meta.url);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-process.env.APP_ROOT = path.join(__dirname, "..");
-const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
-const MAIN_DIST = path.join(process.env.APP_ROOT, "dist-electron");
-const RENDERER_DIST = path.join(process.env.APP_ROOT, "dist");
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, "public") : RENDERER_DIST;
-let win;
-function createWindow() {
-  win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
+import { app as c, BrowserWindow as h, ipcMain as a, dialog as u } from "electron";
+import { fileURLToPath as T } from "node:url";
+import f from "fs";
+import { exec as v } from "node:child_process";
+import i from "node:path";
+import { fileURLToPath as g } from "url";
+import * as s from "path";
+const V = s.dirname(g(import.meta.url)), I = process.env.VITE_DEV_SERVER_URL;
+async function j(o) {
+  const n = I ? s.join("public", "photos") : s.join(V, "..", "..", "app", "public", "photos");
+  return s.join(n, o);
+}
+const _ = i.dirname(T(import.meta.url));
+process.env.APP_ROOT = i.join(_, "..");
+const m = process.env.VITE_DEV_SERVER_URL, S = i.join(process.env.APP_ROOT, "dist-electron"), R = i.join(process.env.APP_ROOT, "dist");
+process.env.VITE_PUBLIC = m ? i.join(process.env.APP_ROOT, "public") : R;
+let e;
+async function E() {
+  const o = await import("node:path");
+  e = new h({
+    icon: o.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.mjs")
+      preload: o.join(_, "preload.mjs")
     }
-  });
-  win.webContents.on("did-finish-load", () => {
-    win == null ? void 0 : win.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
-  });
-  win.maximize();
-  ipcMain.handle("select-directory", async () => {
-    const result = await dialog.showOpenDialog({
+  }), e.webContents.on("did-finish-load", () => {
+    e == null || e.webContents.send("main-process-message", (/* @__PURE__ */ new Date()).toLocaleString());
+  }), e.maximize(), a.handle("select-directory", async () => {
+    const n = await u.showOpenDialog({
       properties: ["openDirectory"]
     });
-    return result.canceled ? null : result.filePaths[0];
-  });
-  ipcMain.handle(
+    return n.canceled ? null : n.filePaths[0];
+  }), a.handle("get-image-file-path", async (n, r) => await j(r)), a.handle(
     "save-image",
-    async (_, filePath, image, fileName) => {
+    async (n, r, l, p) => {
       try {
-        const IMAGE_UPLOAD_PATH = path.resolve(filePath);
-        if (!fs.existsSync(IMAGE_UPLOAD_PATH)) throw Error("File not found");
-        const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
-        const buffer = Buffer.from(base64Data, "base64");
-        const filePathWithName = path.join(IMAGE_UPLOAD_PATH, fileName);
-        fs.writeFileSync(filePathWithName, buffer);
-        return filePathWithName;
-      } catch (error) {
+        const t = o.resolve(r);
+        if (!f.existsSync(t)) throw Error("File not found");
+        const P = l.replace(/^data:image\/\w+;base64,/, ""), w = Buffer.from(P, "base64"), d = o.join(t, p);
+        return f.writeFileSync(d, w), d;
+      } catch {
         console.error("Something happened here");
       }
     }
-  );
-  ipcMain.handle("open-file-explorer", (_event, filePath) => {
-    return new Promise((resolve2, reject) => {
-      exec(`explorer.exe "${filePath}"`, (error) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve2();
-        }
-      });
+  ), a.handle("open-file-explorer", (n, r) => new Promise((l, p) => {
+    v(`explorer.exe "${r}"`, (t) => {
+      t ? p(t) : l();
     });
-  });
-  if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL);
-  } else {
-    win.removeMenu();
-    win.loadFile(path.join(RENDERER_DIST, "index.html"));
-  }
+  })), m ? e.loadURL(m) : e.loadFile(o.join(R, "index.html"));
 }
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-    win = null;
-  }
+c.on("window-all-closed", () => {
+  process.platform !== "darwin" && (c.quit(), e = null);
 });
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+c.on("activate", () => {
+  h.getAllWindows().length === 0 && E();
 });
-app.whenReady().then(createWindow);
+c.whenReady().then(E);
 export {
-  MAIN_DIST,
-  RENDERER_DIST,
-  VITE_DEV_SERVER_URL
+  S as MAIN_DIST,
+  R as RENDERER_DIST,
+  m as VITE_DEV_SERVER_URL
 };
