@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const HowToUse: React.FC = () => {
+  const [imagePath, setImagePath] = useState<string>("");
+
+  useEffect(() => {
+    const fetchImagePath = async () => {
+      const path = await window.ipcRenderer.invoke(
+        "get-image-file-path",
+        "example.png"
+      );
+      setImagePath(path as string);
+    };
+    fetchImagePath();
+  }, []);
+
   return (
     <div className="w-2/4 mx-auto border border-blue-900 rounded-md overflow-hidden m-5">
       <div className="px-5 m-5 flex flex-col gap-3">
@@ -29,7 +42,7 @@ const HowToUse: React.FC = () => {
                 - Phải chính xác theo format sau:
                 <div className="flex justify-center">
                   <img
-                    src="/photos/example.png"
+                    src={imagePath}
                     className="border border-black rounded m-3"
                   ></img>
                 </div>
